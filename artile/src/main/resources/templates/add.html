@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{css/main.css}" rel="stylesheet"/>
+    <script th:src="@{js/index.js}" type="text/javascript"></script>
+</head>
+<body>
+<!--/*@thymesVar id="name" type="java.lang.String"*/-->
+<!--/*@thymesVar id="userName" type=""*/-->
+<p th:text="'欢迎, ' + ${userName} + '来到推荐系统后端!'"></p>
+
+<div id="quartz" style="width: 50%;height: auto;background-color: aqua;">
+        <!--/*@thymesVar id="quartzInfo" type="com.article.recommend.entity.QuartzInfo"*/-->
+        <form   method="post" th:action="@{/saveQuartz}">
+            <p> 类 型：<input th:name="@{type}"/> </p>
+            <p> 所在组：<input th:name="@{group}"/> </p>
+            <p> 类 名：<input th:name="@{className}"/> </p>
+            <p> cron: <input th:name="@{cron}"/> </p>
+            <p> 是否直接执行: <input th:name="@{isRun}"/></p>
+            <p><input type="submit" value="保存" /> <input type="reset" value="重置" /></p>
+
+        </form>
+</div>
+</body>
+</html>
