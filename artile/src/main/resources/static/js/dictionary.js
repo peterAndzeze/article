@@ -5,3 +5,4 @@
 function editDictionary(id) {
      location.href="getDictionayById?id="+id;
 }
+

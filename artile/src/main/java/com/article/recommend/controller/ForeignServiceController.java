@@ -14,6 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ForeignServiceController {
 	@RequestMapping("getArticles")
 	public String getArticlesByUserId (String userId) {
-		
+		return null;
 	}
 }

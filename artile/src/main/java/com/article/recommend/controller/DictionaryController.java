@@ -2,6 +2,9 @@ package com.article.recommend.controller;
 
 import com.article.recommend.entity.DictionaryInfo;
 import com.article.recommend.service.dictionary.DictionaryService;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,4 +34,9 @@ public class DictionaryController {
         redirectAttributes.addAttribute("userName","admin");
         return "redirect:/login";
     }
+    @RequestMapping("dictionary/main")
+    public String main() {
+    	return "dictionary/main";
+    }
+    
 }

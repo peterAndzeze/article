@@ -75,7 +75,7 @@ public class RedisTest {
 			
 			@Override
 			public long getItemID() {
-				return 0;
+				return 1001;
 			}
 		};
 		RecommendedItem recommendedItem1=new RecommendedItem() {
@@ -86,31 +86,31 @@ public class RedisTest {
 			
 			@Override
 			public long getItemID() {
-				return 0;
+				return 10004;
 			}
 		};
 		List<RecommendedItem> recommendedItems=Arrays.asList(recommendedItem,recommendedItem1);
 		
-		//redisService.putList("user:0", recommendedItems, 0L, TimeUnit.DAYS);
+		redisService.putList("user:1", recommendedItems, 0L, TimeUnit.DAYS);
 		
-		List<Object> dataVos= redisService.getList("user:0", 0, -1);
-//		System.out.println("获取0:"+JSONArray.toJSONString(dataVos));
-		List<Long> ids = new ArrayList<>(dataVos.size());//用来临时存储iterm的id
-		String rString= JSONArray.toJSONString(dataVos);
-		System.out.println(rString);
-        List<ArticleResultVo> userList = JSONArray.parseArray(rString, ArticleResultVo.class);  
-        Collections.sort(userList, new Comparator<ArticleResultVo>() {
-        	public int compare(ArticleResultVo a1, ArticleResultVo a2) {
-                return a2.getValue().compareTo(a1.getValue());
-            }
-        });
-		List<ArticleResultVo> newResult=userList.stream().filter(v->{
-			boolean flag=!ids.contains(v.getItemID());
-			ids.add(v.getItemID());
-			return flag;
-		}).collect(Collectors.toList());
-		System.out.println(JSONArray.toJSONString(newResult));
-		
+//		List<Object> dataVos= redisService.getList("user:0", 0, -1);
+////		System.out.println("获取0:"+JSONArray.toJSONString(dataVos));
+//		List<Long> ids = new ArrayList<>(dataVos.size());//用来临时存储iterm的id
+//		String rString= JSONArray.toJSONString(dataVos);
+//		System.out.println(rString);
+//        List<ArticleResultVo> userList = JSONArray.parseArray(rString, ArticleResultVo.class);  
+//        Collections.sort(userList, new Comparator<ArticleResultVo>() {
+//        	public int compare(ArticleResultVo a1, ArticleResultVo a2) {
+//                return a2.getValue().compareTo(a1.getValue());
+//            }
+//        });
+//		List<ArticleResultVo> newResult=userList.stream().filter(v->{
+//			boolean flag=!ids.contains(v.getItemID());
+//			ids.add(v.getItemID());
+//			return flag;
+//		}).collect(Collectors.toList());
+//		System.out.println(JSONArray.toJSONString(newResult));
+//		
 	
 //		System.out.println(LocalDateTime.now());
 //		List<DataVo> dataVos=(List<DataVo>) redisService.getList("userId:1", 0, -1);

@@ -92,5 +92,17 @@ public class RedisService{
 		}
 		return null;
 	}
+	/**
+	 * 
+	 * @Title: deleteByKey  
+	 * @Description: 删除  
+	 * @param key       
+	 * @return void    
+	 * @author sw
+	 * @throws
+	 */
+	public void deleteByKey(String key) {
+		redisTemplate.delete(key);
+	}
 	
 }

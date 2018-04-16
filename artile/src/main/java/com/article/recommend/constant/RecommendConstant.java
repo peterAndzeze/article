@@ -87,16 +87,8 @@ public final class RecommendConstant {
     public static final String RECOMMEND_TYPE_USERRULES="BASERULES";
     /*********推荐相关end**************************/
     /*************************redis 存储key*************************/
-    /**用户**/
-    public static final String REDIS_USER_RECOMMEND_KEY="user:recommend";
-    /**文章***/
-    public static final String REDIS_ITEM_RECOMMEND_KEY="item:recommend";
-    /**规则**/
-    public static final String REDIS_RULE_RECOMMEND_KEY="rule:recommend";
+ 
 
-
-    
-    
 
 
 }
