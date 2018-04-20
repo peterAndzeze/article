@@ -1,7 +1,9 @@
 package com.article.recommend.mapper.localMapper;
 
+import com.article.recommend.constant.PageModel;
 import com.article.recommend.entity.DictionaryInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -32,6 +34,43 @@ public interface DictionaryMapper {
      * @param dictionaryInfo
      */
     public void updateDictionary(DictionaryInfo dictionaryInfo);
-
+    /**
+     * 
+     * @Title: page  
+     * @Description: 获取分页数据         
+     * @author sw
+     * @param dictionaryInfo
+     * @param pageModel
+     * @return
+     */
+    public List<DictionaryInfo> page(@Param("dictionaryInfo")DictionaryInfo dictionaryInfo,@Param("pageModel")PageModel pageModel);
+    /**
+     * 
+     * @Title: pageCount  
+     * @Description:分页总数         
+     * @author sw
+     * @param dictionaryInfo
+     * @return
+     */
+    public int pageCount(DictionaryInfo dictionaryInfo);
+    /**
+     * 
+     * @Title: addDictionary  
+     * @Description: 新增         
+     * @author sw
+     * @param dictionaryInfo
+     * @return
+     */
+    public int addDictionary(DictionaryInfo dictionaryInfo);
+    
+    /**
+     * 
+     * @Title: deleteDictionary  
+     * @Description: 删除         
+     * @author sw
+     * @param id
+     */
+    public void deleteDictionary(Long id);
+    
 }
 

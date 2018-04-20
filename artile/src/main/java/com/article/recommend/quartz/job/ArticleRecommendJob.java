@@ -8,7 +8,6 @@ import com.article.recommend.util.DateUtil;
 import com.article.recommend.util.SpringUtil;
 
 import org.apache.hadoop.fs.FileStatus;
-import org.apache.hadoop.hdfs.server.common.JspHelper.Url;
 import org.quartz.DisallowConcurrentExecution;
 import org.quartz.JobExecutionContext;
 import org.quartz.PersistJobDataAfterExecution;
@@ -18,11 +17,7 @@ import org.springframework.util.ClassUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.ParseException;
-
-import javax.sound.midi.Soundbank;
-
 /**
  * 定时任务执行推荐job
  */

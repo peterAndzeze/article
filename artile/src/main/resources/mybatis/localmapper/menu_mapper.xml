@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.article.recommend.mapper.localMapper.MenuMapper">
+	<resultMap id="MenuInfo" type="com.article.recommend.entity.MenuInfo">
+		<result column="id" property="id" />
+		<result column="menu_name" property="menuName" />
+		<result column="state" property="state" />
+		<result column="owner_id" property="ownerId" />
+		<result column="owner_origin_id" property="ownerOriginId" />
+		<result column="is_leaf" property="leaf" />
+		<result column="parent_id" property="parentId"/>
+	    <result column="path" property="path"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		t.id,
+		t.menu_name,
+		t.state,
+		t.owner_id,
+		t.owner_origin_id,
+		t.is_leaf,
+		t.parent_id,
+		t.path
+	</sql>
+
+	<select id="queryMenus" parameterType="java.lang.Long" resultMap="MenuInfo">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM tb_menu AS t where 1=1
+		<if test="null!=parentId">
+			and t.parent_id=#{parentId}
+		</if>
+	</select>
+
+	<select id="queryMenuInfoById" parameterType="java.lang.Long" resultMap="MenuInfo">
+		SELECT * FROM tb_menu AS t 
+		where t.id=#{id}
+	</select>
+	
+	<select id="getMenuModels" resultMap="MenuInfo">
+	   select * from tb_menu as t where t.state='0';
+	</select>
+	
+	<update id="updateMenu" parameterType="com.article.recommend.entity.MenuInfo">
+	   update tb_menu set version=version+1
+	   <if test="null!=menuName and ''!=menuName">
+           ,menu_name=#{menuName}
+       </if>
+       <if test="null!=state and ''!=state ">
+            ,state=#{state} 
+       </if>
+       <if test="null!=path and ''!=path ">
+            ,path=#{path} 
+       </if>
+       <if test="null!=leaf and ''!=leaf">
+            ,is_leaf=#{leaf}
+       </if>
+	   where id=${id}
+	 
+	</update>
+	<insert id="saveMenu" parameterType="com.article.recommend.entity.MenuInfo">
+	   insert into tb_menu (MENU_NAME,state,parent_id,owner_id,owner_origin_id,is_leaf,path)
+	   values(#{menuName},#{display},#{state},#{parentId},#{ownerId},#{ownerOriginId},#{leaf},#{path})
+	</insert>
+	
+	<delete id="deleteMenu">
+	   delete from tb_menu where id=#{id}
+	</delete>
+	
+	
+</mapper>

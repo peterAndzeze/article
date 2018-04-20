@@ -10,6 +10,15 @@ public class RecommendHistoryInfo {
 	private Long id;
 	private Long userId;
 	private Long articleId;
+	private Float value;
+	private String createTime;
+	
+	public String getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(String createTime) {
+		this.createTime = createTime;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -27,6 +36,12 @@ public class RecommendHistoryInfo {
 	}
 	public void setArticleId(Long articleId) {
 		this.articleId = articleId;
+	}
+	public Float getValue() {
+		return value;
+	}
+	public void setValue(Float value) {
+		this.value = value;
 	}
 	
 }

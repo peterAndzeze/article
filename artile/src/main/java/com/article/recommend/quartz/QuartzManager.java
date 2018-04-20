@@ -1,6 +1,5 @@
 package com.article.recommend.quartz;
 
-import com.article.recommend.constant.RecommendConstant;
 import com.article.recommend.quartz.job.BaseJob;
 import org.apache.log4j.Logger;
 import org.quartz.*;
@@ -48,10 +47,16 @@ public class QuartzManager {
      * @param jobClassName 任务类
      * @param group 所在组
      */
-    public void resume(String jobClassName,String group) throws SchedulerException {
+    public void resume(String jobClassName,String group,String cron) throws SchedulerException {
         try {
             log.info("恢复任务:"+jobClassName+","+group+"start");
-            scheduler.resumeJob(JobKey.jobKey(jobClassName,group));
+            boolean exis=scheduler.checkExists(JobKey.jobKey(jobClassName,group));
+            log.info("是否存在job***"+exis);
+            if(exis) {
+            	scheduler.resumeJob(JobKey.jobKey(jobClassName,group));
+        	}else {
+        		addJob(jobClassName, group, cron);
+        	}	
             log.info("恢复任务:"+jobClassName+","+group+"end");
         } catch (SchedulerException e) {
             log.error("恢复任务失败:"+jobClassName+","+group+":"+e.getMessage());
@@ -69,6 +74,10 @@ public class QuartzManager {
      */
     public void  reschedule(String jobClassName,String group,String cron) throws SchedulerException {
         try {
+        	  boolean exis=scheduler.checkExists(JobKey.jobKey(jobClassName,group));
+        	  if(!exis) {
+        		  return ;
+        	  }
             log.info("更新cron:"+jobClassName+","+group+","+cron+" start");
             TriggerKey triggerKey = TriggerKey.triggerKey(jobClassName, group);
             // 表达式调度构建器
@@ -115,7 +124,7 @@ public class QuartzManager {
      * @param cron
      * @param isRun
      */
-    public void addJob(String className,String group,String cron,String isRun){
+    public void addJob(String className,String group,String cron){
         try {
            log.info("scheduler 是否启动:"+scheduler.isStarted());
            boolean isExists=scheduler.checkExists(new JobKey(className,group));
@@ -135,9 +144,6 @@ public class QuartzManager {
             CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(className, group)
                     .withSchedule(scheduleBuilder).build();
             scheduler.scheduleJob(jobDetail, trigger);
-            if(isRun.equals(RecommendConstant.SYSTEM_DATE_INVALID)){//如果定时任务是暂停状态
-                paused(className,group);//停止
-            }
         } catch (SchedulerException e1) {
             log.error("初始化有问题***"+e1.getMessage());
             e1.printStackTrace();
@@ -146,6 +152,42 @@ public class QuartzManager {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * 前端新增
+     * @param className
+     * @param group
+     * @param cron
+     * @param isRun
+     * @throws Exception 
+     */
+    public void frontJob(String className,String group,String cron) throws Exception{
+        try {
+           log.info("scheduler 是否启动:"+scheduler.isStarted());
+           boolean isExists=scheduler.checkExists(new JobKey(className,group));
+           if(isExists){
+               log.info("已经存在***");
+               return ;
+           }
+            //启动调度器
+            if( !scheduler.isStarted()){
+                scheduler.start();
+            }
+            //构建job信息
+            JobDetail jobDetail = JobBuilder.newJob(getClass(className).getClass()).withIdentity(className, group).build();
+            //表达式调度构建器(即任务执行的时间)
+            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(cron);
+            //按新的cronExpression表达式构建一个新的trigger
+            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(className, group)
+                    .withSchedule(scheduleBuilder).build();
+            scheduler.scheduleJob(jobDetail, trigger);
+        } catch (Exception e1) {
+            log.error("添加有问题***"+e1.getMessage());
+            e1.printStackTrace();
+            throw new SchedulerException("添加异常");
+         }
+    }
+    
     /**
      * 获取类
      * @param classname

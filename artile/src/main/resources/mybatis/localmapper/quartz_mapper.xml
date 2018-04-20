@@ -6,21 +6,20 @@
         <result column="cron" property="cron" jdbcType="VARCHAR"/>
         <result column="state" property="state" jdbcType="VARCHAR"/>
         <result column="group" property="group" jdbcType="VARCHAR"/>
-        <result column="is_run" property="isRun" jdbcType="VARCHAR"/>
         <result column="class_name" property="className" jdbcType="VARCHAR"/>
     </resultMap>
 
 
    <select id="getQuartzInfos" resultMap="BaseResultMap">
        select
-         id,`type`,cron,state,`group`,is_run,class_name
+         id,`type`,cron,state,`group`,class_name
        FROM  tb_quartz_info
    </select>
 
 
     <select id="getQuartzInfoById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
-        id,`type`,cron,state,`group`,is_run,class_name
+        id,`type`,cron,state,`group`,class_name
         FROM  tb_quartz_info
         where id=#{id}
     </select>
@@ -32,28 +31,48 @@
         <if test="null!=state">state=#{state},</if>
         <if test="null!=cron">cron=#{cron},</if>
             <if test="null!=className">class_name=#{className},</if>
-            <if test="null!=isRun">is_run=#{isRun},</if>
         </trim>
         where id=#{id}
     </update>
 
 
-    <update id="updateQuartzIsRun" parameterType="com.article.recommend.entity.QuartzInfo">
-        update tb_quartz_info
-        is_run=#{isRun}
-        where id=#{id}
-    </update>
 
     <insert id="inserQuartz" parameterType="com.article.recommend.entity.QuartzInfo">
          INSERT INTO
         tb_quartz_info
-        (`type`,cron,state,`group`,is_run,class_name)
+        (`type`,cron,state,`group`,class_name)
         VALUES
-        (#{type}, #{cron},#{state},#{group},#{isRun},#{className})
+        (#{type}, #{cron},#{state},#{group},#{className})
     </insert>
 
     <delete id="deleteQuartz" parameterType="java.lang.Long" >
       DELETE  FROM  tb_quartz_info WHERE  id=#{id}
     </delete>
+    
+    
+    <select id="pageCount" resultType="java.lang.Integer" parameterType="com.article.recommend.entity.QuartzInfo">
+    	select count(1) from tb_quartz_info
+    	where 1=1
+    	<if test="null!=group and ''!=group">
+    		and group like  CONCAT('%',#{group},'%')
+    	</if>
+    	<if test="null!=className and ''!=className">
+    		and class_name like  CONCAT('%',#{className},'%')
+    	</if>
+    </select>
+    
+    
+     <select id="page"  resultMap="BaseResultMap" >
+    	select id,`type`,cron,state,`group`,class_name from tb_quartz_info
+    	where 1=1
+    	<if test="null!=quartzInfo.group and ''!=quartzInfo.group">
+    		and group like  CONCAT('%',#{quartzInfo.group},'%')
+    	</if>
+    	<if test="null!=quartzInfo.className and ''!=quartzInfo.className">
+    		and class_name like  CONCAT('%',#{quartzInfo.className},'%')
+    	</if>
+    	order by id desc  limit #{pageModel.start}, #{pageModel.limit}
+    </select>
+    
 
 </mapper>

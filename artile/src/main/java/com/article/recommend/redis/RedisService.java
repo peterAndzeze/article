@@ -22,15 +22,13 @@ public class RedisService{
 	private RedisTemplate<String, Object> redisTemplate;
 	/**
 	 * 
-	 * @Title: putMapList  
-	 * @Description: TODO  
+	 * @Title: putMap  
+	 * @Description: 存         
+	 * @author sw
 	 * @param key
 	 * @param map
 	 * @param expire
-	 * @param timeUnit 时间类型（天，小时，分钟...）
-	 * @return void    
-	 * @author sw
-	 * @throws
+	 * @param timeUnit
 	 */
 	public  void putMap(String key,Map<?, ?> map,Long expire,TimeUnit timeUnit) {
 		try {
@@ -42,7 +40,14 @@ public class RedisService{
 			e.printStackTrace();
 		}
 	}
-	//获取
+	/**
+	 * 
+	 * @Title: getMap  
+	 * @Description: 获取         
+	 * @author sw
+	 * @param key
+	 * @return
+	 */
 	public  Map<Object, Object> getMap(String key) {
 		try {
 			return redisTemplate.opsForHash().entries(key);
@@ -54,13 +59,12 @@ public class RedisService{
 	/**
 	 * 
 	 * @Title: putList  
-	 * @Description: 存入list  
+	 * @Description: 存入list         
+	 * @author sw
 	 * @param key
 	 * @param list
-	 * @param expire       
-	 * @return void    
-	 * @author sw
-	 * @throws
+	 * @param expire
+	 * @param timeUnit
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public   void putList(String key,List list,Long expire,TimeUnit timeUnit) {
@@ -76,13 +80,12 @@ public class RedisService{
 	/**
 	 * 
 	 * @Title: getList  
-	 * @Description: 取  
+	 * @Description: 取         
+	 * @author sw
 	 * @param key
 	 * @param start
-	 * @param end       
-	 * @return void    
-	 * @author sw
-	 * @throws
+	 * @param end
+	 * @return
 	 */
 	public List<Object> getList(String key,int start,int end) {
 		try {
@@ -95,14 +98,24 @@ public class RedisService{
 	/**
 	 * 
 	 * @Title: deleteByKey  
-	 * @Description: 删除  
-	 * @param key       
-	 * @return void    
+	 * @Description: 删除         
 	 * @author sw
-	 * @throws
+	 * @param key
 	 */
 	public void deleteByKey(String key) {
 		redisTemplate.delete(key);
 	}
+	/**
+	 * 
+	 * @Title: getCount  
+	 * @Description: 获取总数         
+	 * @author sw
+	 * @param key
+	 * @return
+	 */
+	public Long  getCount(String key) {
+		return redisTemplate.opsForList().size(key);
+	}
+	
 	
 }

@@ -40,5 +40,8 @@ public class HdfsTest {
      // String content= HdfsUtil.readHdfsFile(RecommendConstant.BASEPATH+"userprefs/tmp.txt");
       //System.out.println(content);
     }
+    
+    
+    
 
 }

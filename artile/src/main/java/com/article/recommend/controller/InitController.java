@@ -1,54 +1,32 @@
 package com.article.recommend.controller;
 
-import com.article.recommend.dbsourcemanager.PropertiesModel;
-import com.article.recommend.entity.DictionaryInfo;
-import com.article.recommend.entity.QuartzInfo;
-import com.article.recommend.service.dictionary.DictionaryService;
-import com.article.recommend.service.quartzservice.QuartzService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class InitController {
-    @Autowired
-    private PropertiesModel propertiesModel;
-    @Autowired
-    private QuartzService quartzService;
-    @Autowired
-    private DictionaryService dictionaryService;
 
-    @RequestMapping("/")
-    public String  start(Model model){
-        System.out.println("项目启动方法入口");
-        model.addAttribute("name",propertiesModel.getDriverClassName());
-        return "index";
-    }
+	@RequestMapping("/")
+	public String start(Model model) {
+		return "index";
+	}
 
-    /**
-     * 用户session验证 暂时没有
-     */
-    public void validateUser(){
-
-    }
-    @RequestMapping("/login")
-    public String  login(Model model,HttpServletResponse response,@RequestParam String userName,@RequestParam String password){
-
-            if(userName.equals("admin") && userName.equals(password)){
-                model.addAttribute("userName",userName);
-                List<QuartzInfo> quartzInfos= quartzService.getQuartzInfos();
-                model.addAttribute("quartzInfos",quartzInfos);
-                List<DictionaryInfo> dictionaryInfos=dictionaryService.queryDictionarys();
-                model.addAttribute("dictionaryInfos",dictionaryInfos);
-                return"main";
-            }else{
-                return "index";
-            }
-    }
+	@RequestMapping("login")
+	public String login(HttpServletRequest request,String userName,String password) {
+		if(null==userName || "".equals(userName)) {
+			return "index";
+		}
+		if (userName.equals("admin") && userName.equals(password)) {
+			request.getSession().setAttribute("session_user", userName + password);
+			request.getSession().setMaxInactiveInterval(60);
+			return "main";
+		} else {
+			return "index";
+		}
+	}
 
 }

@@ -7,6 +7,9 @@
 		<result column="user_id" property="userId" jdbcType="BIGINT" />
 		<result column="article_id" property="articleId"
 			jdbcType="BIGINT" />
+		<result column="value" property="value" jdbcType="FLOAT" />
+		<result column="create_time" property="createTime"
+			jdbcType="VARCHAR" />
 	</resultMap>
 
 
@@ -15,18 +18,39 @@
 		select
 		article_id
 		FROM tb_recommend_history
-		where user_id =#{userId}
+		where user_id
+		=#{userId}
+	</select>
+
+	<select id="page" resultMap="BaseResultMap">
+		select
+		article_id,user_id,`value`,create_time
+		FROM tb_recommend_history
+		where 1=1
+		<if test="null!=history.userId">
+			and user_id=#{history.userId}
+		</if>
+		order by id desc limit #{page.start},#{page.limit} 
+	</select>
+
+	<select id="count" resultType="java.lang.Integer" parameterType="java.lang.Long">
+		select count(1)
+		from tb_recommend_history
+		where 1=1
+		<if test="null!=userId">
+			and user_id=#{userId}
+		</if>
 	</select>
 
 
 
 	<insert id="insertRecommendHistory">
 		INSERT INTO
-		tb_recommend_history(user_id,article_id)
+		tb_recommend_history(user_id,article_id,`value`,create_time)
 		VALUES
 		<foreach collection="articleResultVos" item="item"
 			separator=",">
-			(#{userId},#{item.itemID})
+			(#{userId},#{item.itemID},#{item.value},date_format(now(),'%Y-%m-%d'))
 		</foreach>
 	</insert>
 

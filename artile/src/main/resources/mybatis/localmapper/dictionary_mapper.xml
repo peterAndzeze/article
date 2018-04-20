@@ -26,7 +26,27 @@
        WHERE id=#{id}
 
    </select>
+	<select id="page" resultMap="BaseResultMap">
+		select 
+		id,display,`value`,state,`key` 
+		from tb_dictionary
+	    where 1=1 
+	    <if test="null!=dictionaryInfo.key and ''!=dictionaryInfo.key">
+	    	and `key` LIKE CONCAT('%',#{dictionaryInfo.key},'%')
+	    </if>
+	   order by id desc limit #{pageModel.start}, #{pageModel.limit}
+	</select>
+	
+	<select id="pageCount" resultType="java.lang.Integer" parameterType="com.article.recommend.entity.DictionaryInfo">
+		select 
+			count(1) 
+		from tb_dictionary
+	    where 1=1 
+	    <if test="null!=key and ''!=key">
+	    	and `key` LIKE CONCAT('%',#{key},'%')
+	    </if>
 
+	</select>
 <update id="updateDictionary" parameterType="com.article.recommend.entity.DictionaryInfo">
     UPDATE
     tb_dictionary
@@ -36,5 +56,17 @@
     WHERE
        id=#{id}
 </update>
+
+<insert id="addDictionary" parameterType="com.article.recommend.entity.DictionaryInfo">
+	insert into tb_dictionary ( display,`value`,state,`key`)
+	values(#{display},#{value},#{state},#{key})
+</insert>
+
+<delete id="deleteDictionary" parameterType="java.lang.Long">
+	delete from tb_dictionary where id=#{id}
+	
+</delete>
+
+
 
 </mapper>

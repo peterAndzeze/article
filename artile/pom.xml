@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -15,7 +16,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.9.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -32,6 +33,42 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!-- <dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server</artifactId>
+			<version>1.5.6</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-configuration</artifactId>
+					<groupId>commons-configuration</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>archaius-core</artifactId>
+					<groupId>com.netflix.archaius</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-boot-starter-web</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-thymeleaf</artifactId>
+					</exclusion>
+				<exclusion>
+					<artifactId>jackson-databind</artifactId>
+					<groupId>com.fasterxml.jackson.core</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-boot-autoconfigure</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-server-ui</artifactId>
+			<version>1.5.6</version>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-redis</artifactId>
@@ -69,6 +106,12 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-starter-web</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -81,10 +124,8 @@
 			<artifactId>druid</artifactId>
 			<version>1.1.8</version>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
-		</dependency>-->
+		<!--<dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-jdbc</artifactId> 
+			</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -137,14 +178,10 @@
 					<artifactId>guava</artifactId>
 					<groupId>com.google.guava</groupId>
 				</exclusion>
-				<!--<exclusion>
-					<artifactId>servlet-api</artifactId>
-					<groupId>javax.servlet</groupId>
-				</exclusion>-->
-				<!--<exclusion>
-					<artifactId>jersey-core</artifactId>
-					<groupId>com.sun.jersey</groupId>
-				</exclusion>-->
+				<!--<exclusion> <artifactId>servlet-api</artifactId> <groupId>javax.servlet</groupId> 
+					</exclusion> -->
+				<!--<exclusion> <artifactId>jersey-core</artifactId> <groupId>com.sun.jersey</groupId> 
+					</exclusion> -->
 				<exclusion>
 					<artifactId>jackson-core-asl</artifactId>
 					<groupId>org.codehaus.jackson</groupId>
@@ -152,6 +189,10 @@
 				<exclusion>
 					<artifactId>jackson-mapper-asl</artifactId>
 					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>servlet-api</artifactId>
+					<groupId>javax.servlet</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -206,21 +247,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!--<dependency>
-			<groupId>org.apache.sqoop</groupId>
-			<artifactId>sqoop-core</artifactId>
-			<version>1.99.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.sqoop</groupId>
-			<artifactId>sqoop-client</artifactId>
-			<version>1.99.7</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.hive</groupId>
-			<artifactId>hive-jdbc</artifactId>
-			<version>0.13.1</version>
-		</dependency>-->
+		<!--<dependency> <groupId>org.apache.sqoop</groupId> <artifactId>sqoop-core</artifactId> 
+			<version>1.99.7</version> </dependency> <dependency> <groupId>org.apache.sqoop</groupId> 
+			<artifactId>sqoop-client</artifactId> <version>1.99.7</version> </dependency> 
+			<dependency> <groupId>org.apache.hive</groupId> <artifactId>hive-jdbc</artifactId> 
+			<version>0.13.1</version> </dependency> -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
@@ -250,10 +281,8 @@
 			<artifactId>mahout-core</artifactId>
 			<version>0.8</version>
 			<exclusions>
-				<!--<exclusion>
-					<artifactId>mahout-math</artifactId>
-					<groupId>org.apache.mahout</groupId>
-				</exclusion>-->
+				<!--<exclusion> <artifactId>mahout-math</artifactId> <groupId>org.apache.mahout</groupId> 
+					</exclusion> -->
 				<exclusion>
 					<artifactId>commons-codec</artifactId>
 					<groupId>commons-codec</groupId>
@@ -286,6 +315,10 @@
 				<exclusion>
 					<artifactId>mahout-math</artifactId>
 					<groupId>org.apache.mahout</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
 				</exclusion>
 			</exclusions>
 		</dependency>

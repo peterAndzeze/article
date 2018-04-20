@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.article.recommend.constant.RecommendConstant;
 import com.article.recommend.redis.RedisService;
 import com.article.recommend.service.recommendservice.RecommendHistoryService;
@@ -46,7 +44,7 @@ public class ForeignService {
 	public ForeignResultVo getArticlesById(Long userId) {
 		//从redis中取出
 		logger.info("用户{}取数据 start",userId);
-		List<Object> resultMaps =redisService.getList("user:"+userId, 0, -1);
+		List<Object> resultMaps =redisService.getList(RecommendConstant.USER_REDIS+userId, 0, -1);
 		if(null == resultMaps || resultMaps.isEmpty()) {
 			logger.info("用户{}没有推荐数据",userId);
 			return createForeignResult(ForeignRedultEnum.FOREIGN_NODATA_CODE, userId, null);

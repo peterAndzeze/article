@@ -6,7 +6,10 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSONArray;
 import com.article.recommend.ArticlerecommendApplicationTests;
+import com.article.recommend.constant.PageModel;
+import com.article.recommend.entity.RecommendHistoryInfo;
 import com.article.recommend.mapper.localMapper.RecommendHistoryMapper;
 import com.article.recommend.service.foreignservice.ArticleResultVo;
 
@@ -33,4 +36,20 @@ public class RecommendHistoryTest extends ArticlerecommendApplicationTests {
 		List<ArticleResultVo> aList=Arrays.asList(articleResultVo,articleResultVo1,articleResultVo3);
 		recommendHistoryMapper.insertRecommendHistory(1L, aList);
 	}
+	
+	@Test
+	public void page() {
+		int count=recommendHistoryMapper.count(1L);
+		System.out.println(count+"*************");
+		
+		PageModel pageModel=new PageModel();
+		pageModel.setStart(0);
+		pageModel.setLimit(2);
+		RecommendHistoryInfo recommendHistoryInfo=new RecommendHistoryInfo();
+		recommendHistoryInfo.setUserId(1L);
+		List<RecommendHistoryInfo> historyInfos=recommendHistoryMapper.page(recommendHistoryInfo, pageModel);
+		System.out.println(JSONArray.toJSONString(historyInfos));
+		
+	}
+	
 }

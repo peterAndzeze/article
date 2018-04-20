@@ -1,5 +1,6 @@
 package com.article.recommend.service.quartzservice;
 
+import com.article.recommend.constant.PageModel;
 import com.article.recommend.constant.RecommendConstant;
 import com.article.recommend.entity.QuartzInfo;
 import com.article.recommend.mapper.localMapper.QuartzMapper;
@@ -37,29 +38,11 @@ public class QuartzService {
     public void updateQuartzInfo(QuartzInfo quartzInfo) throws SchedulerException {
     	QuartzInfo dbQuartzInfo=getQuartzInfoById(quartzInfo.getId());
     	//比对数据库状态
-    	if(!quartzInfo.getState().equals(dbQuartzInfo.getState())){//和数据库不相等
-        	//无效变成有效
-        	if(quartzInfo.getState().equals(RecommendConstant.SYSTEM_DATE_EFFECTIVE)) {
-                quartzMapper.updateQuartz(quartzInfo);
-        		quartzManager.addJob(quartzInfo.getClassName(), quartzInfo.getGroup(),quartzInfo.getCron(), dbQuartzInfo.getIsRun());
-        	}
-        	//有效变成无效
-        	if(quartzInfo.getState().equals(RecommendConstant.SYSTEM_DATE_INVALID) ) {
-        		//第一步，更新数据状态与运行状态
-        		quartzInfo.setIsRun(RecommendConstant.SYSTEM_DATE_INVALID);
-                quartzMapper.updateQuartz(quartzInfo);
-                //第二步删除job
-        		quartzManager.delete(quartzInfo.getClassName(), quartzInfo.getGroup());
-            }
-        }else {//相等
-        	if(!quartzInfo.getCron().equals(dbQuartzInfo.getCron())){//不相等
-        		quartzMapper.updateQuartz(quartzInfo);
-             	quartzManager.reschedule(quartzInfo.getClassName(),quartzInfo.getGroup(),quartzInfo.getCron());
-             }
+        quartzMapper.updateQuartz(quartzInfo);
+        //相等
+        if(!quartzInfo.getCron().equals(dbQuartzInfo.getCron())){//运行中的修改
+        	quartzManager.reschedule(quartzInfo.getClassName(),dbQuartzInfo.getGroup(),quartzInfo.getCron());
         }
-        
-        
-        
     }
 
     /**
@@ -68,7 +51,7 @@ public class QuartzService {
      */
     @Transactional(value = "localDataTransactionManager",propagation = Propagation.REQUIRED)
     public  void  paused(QuartzInfo quartzInfo) throws SchedulerException {
-        quartzInfo.setIsRun(RecommendConstant.SYSTEM_DATE_INVALID);
+    	quartzInfo.setState(RecommendConstant.QUARTZ_STOPING);
         quartzMapper.updateQuartz(quartzInfo);
         quartzManager.paused(quartzInfo.getClassName(),quartzInfo.getGroup());
     }
@@ -80,20 +63,22 @@ public class QuartzService {
      */
     @Transactional(value = "localDataTransactionManager",propagation = Propagation.REQUIRED)
     public  void  resume(QuartzInfo quartzInfo) throws SchedulerException {
-        quartzInfo.setIsRun(RecommendConstant.SYSTEM_DATE_EFFECTIVE);
+    	quartzInfo.setState(RecommendConstant.QUARTZ_RUNING);
         quartzMapper.updateQuartz(quartzInfo);
-        quartzManager.resume(quartzInfo.getClassName(),quartzInfo.getGroup());
+        quartzManager.resume(quartzInfo.getClassName(),quartzInfo.getGroup(),quartzInfo.getCron());
     }
 
     /**
      * 新增
      * @param quartzInfo
+     * @throws Exception 
      */
-    @Transactional(value = "localDataTransactionManager",propagation = Propagation.REQUIRED)
-    public void addQuartzInfo(QuartzInfo quartzInfo){
-        quartzInfo.setState(RecommendConstant.SYSTEM_DATE_EFFECTIVE);
+    @Transactional(value = "localDataTransactionManager",propagation = Propagation.REQUIRED,rollbackFor=Exception.class)
+    public void addQuartzInfo(QuartzInfo quartzInfo) throws Exception{
         quartzMapper.inserQuartz(quartzInfo);
-        quartzManager.addJob(quartzInfo.getClassName(),quartzInfo.getGroup(),quartzInfo.getCron(),quartzInfo.getIsRun());
+        if(quartzInfo.getState().equals(RecommendConstant.QUARTZ_RUNING)) {
+        	quartzManager.frontJob(quartzInfo.getClassName(),quartzInfo.getGroup(),quartzInfo.getCron());
+        }
     }
 
     /**
@@ -106,4 +91,23 @@ public class QuartzService {
         quartzMapper.deleteQuartz(id);
         quartzManager.delete(quartzInfo.getClassName(),quartzInfo.getGroup());
     }
+    /**
+     * 
+     * @Title: page  
+     * @Description: 分页         
+     * @author sw
+     * @param pageModel
+     * @param quartzInfo
+     * @return
+     */
+    public PageModel page(PageModel pageModel,QuartzInfo quartzInfo) {
+    	int count=quartzMapper.pageCount(quartzInfo);
+    	pageModel.setRowCount(count);
+    	List<QuartzInfo> quartzInfos=quartzMapper.page(pageModel, quartzInfo);
+    	pageModel.setRecords(quartzInfos);
+    	return pageModel;
+    }
+    
+    
+    
 }

@@ -54,7 +54,7 @@ public class ItermRecommend {
             Long residueTime=DateUtil.getResidueMinutes();
             logger.info("基于文章redis有效时间还有{}分钟",residueTime);
             for (Map.Entry<Long,List<RecommendedItem>>  entry:dataMap.entrySet()){
-            	redisService.putList("userid:"+entry.getKey(), entry.getValue(), residueTime, TimeUnit.MINUTES);
+            	redisService.putList(RecommendConstant.USER_REDIS+entry.getKey(), entry.getValue(), residueTime, TimeUnit.MINUTES);
             }
         	logger.info("基于文章推荐 end");
         } catch (Exception e) {

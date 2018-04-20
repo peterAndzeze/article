@@ -3,6 +3,8 @@ package com.article.recommend.service.recommendservice;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import com.article.recommend.constant.PageModel;
+import com.article.recommend.entity.RecommendHistoryInfo;
 import com.article.recommend.mapper.localMapper.RecommendHistoryMapper;
 import com.article.recommend.service.foreignservice.ArticleResultVo;
 
@@ -44,5 +46,22 @@ public class RecommendHistoryService {
 	public void insertRecommendHistory (Long userId,List<ArticleResultVo> articleResultVos) {
 		recommendHistoryMapper.insertRecommendHistory(userId, articleResultVos);
 	}
+	/**
+	 * 分页数据
+	 * @Title: page  
+	 * @Description: TODO         
+	 * @author sw
+	 * @param pageModel
+	 * @param recommendHistoryInfo
+	 * @return
+	 */
+	public PageModel page(PageModel pageModel,RecommendHistoryInfo recommendHistoryInfo) {
+		int count=recommendHistoryMapper.count(1L);
+		pageModel.setRowCount(count);
+		List<RecommendHistoryInfo> historyInfos=recommendHistoryMapper.page(recommendHistoryInfo, pageModel);
+		pageModel.setRecords(historyInfos);
+		return pageModel;
+	}
+	
 	
 }

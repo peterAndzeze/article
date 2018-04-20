@@ -1,7 +1,9 @@
 package com.article.recommend.mapper.localMapper;
 
+import com.article.recommend.constant.PageModel;
 import com.article.recommend.entity.QuartzInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -37,6 +39,26 @@ public interface QuartzMapper {
      * @param id
      */
     public void deleteQuartz(Long id);
+    /**
+     * 
+     * @Title: pageCount  
+     * @Description: 总数         
+     * @author sw
+     * @param quartzInfo
+     * @return
+     */
+    public int pageCount(QuartzInfo quartzInfo);
+    /**
+     * 
+     * @Title: page  
+     * @Description: 数据集合         
+     * @author sw
+     * @param pageModel
+     * @param quartzInfo
+     * @return
+     */
+    public List<QuartzInfo> page(@Param("pageModel")PageModel pageModel,@Param("quartzInfo")QuartzInfo quartzInfo);
+    
 
 }
 

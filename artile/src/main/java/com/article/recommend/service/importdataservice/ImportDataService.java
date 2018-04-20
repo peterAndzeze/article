@@ -30,7 +30,7 @@ public class ImportDataService {
     /**
      * 从资讯平台导入数据到mysql
      */
-    @Transactional(value = "localDataTransactionManager",transactionManager = "localDataTransactionManager",propagation = Propagation.REQUIRED)
+    @Transactional(value = "localDataTransactionManager",propagation = Propagation.REQUIRED)
     public void importArticleData(){
         ExecuteDbRecord executeDbRecord=executorDbRecordMapper.getExecuteDbRecord(RecommendConstant.DB_ARTICLE_TYPE);
         String businessDate= DateUtil.dateToString(new Date(),DateUtil.DATE);
@@ -46,10 +46,10 @@ public class ImportDataService {
             return ;
         }
         Integer count=dataVo.getCount();//文章最大数
-       logger.info("文章数据:"+count+",每次执行大小："+executeDbRecord.getRownums());
+       logger.info("文章数据:{},每次执行大小:{}",count,executeDbRecord.getRownums());
         int rowNums=executeDbRecord.getRownums();
         int pages=(count+rowNums-1)/rowNums;;
-       logger.info("执行批次数："+pages);
+       logger.info("执行批次数{}",pages);
         Long beforeId=executeDbRecord.getBeforeId();//这一次id抽取最小值
         Map<String,Object> queryParams=new HashMap<>();
         queryParams.put("beforeId",beforeId);
@@ -66,7 +66,7 @@ public class ImportDataService {
         executeDbRecord.setBeforeId(dataVo.getMaxId());
         executeDbRecord.setUpdateTime(DateUtil.dateToString(new Date(),DateUtil.DATETIME));
         executorDbRecordMapper.updateExecuteDbRecord(executeDbRecord);
-       logger.info("end:"+System.currentTimeMillis());
+       logger.info("end{}",System.currentTimeMillis());
 
     }
 

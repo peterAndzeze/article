@@ -43,7 +43,9 @@ public final class RecommendConstant {
     public static final String QUARTZ_TYPE_ARTICLE="quartz_article";
 
     /*********定时任务***********************/
-
+    public static final String QUARTZ_RUNING="2";
+    /**无效**/
+    public static final String QUARTZ_STOPING="3";
     /*********系统数据统一状态***********************/
     /**有效**/
     public static final String SYSTEM_DATE_EFFECTIVE="0";
@@ -87,8 +89,13 @@ public final class RecommendConstant {
     public static final String RECOMMEND_TYPE_USERRULES="BASERULES";
     /*********推荐相关end**************************/
     /*************************redis 存储key*************************/
- 
-
+    public static final String USER_REDIS="userId:";
+    /**子节点**/
+    public static final String IS_LEAF="0";
+    /**非子节点***/
+    public static final String IS_NOT_LEAF="1";
+    public static final Integer TREE_NORMAL_LEV = 2;//一次取树的常规级数
+    public static final Long PARENT_ID=0L;
 
 
 }

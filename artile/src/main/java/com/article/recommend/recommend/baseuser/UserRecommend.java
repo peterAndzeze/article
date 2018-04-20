@@ -51,7 +51,7 @@ public class UserRecommend {
             Map<Long,List<RecommendedItem>> dataMap=userRecommend(dataModel,nearNum);
             Long residueTime=DateUtil.getResidueMinutes();
             for (Map.Entry<Long,List<RecommendedItem>>  entry:dataMap.entrySet()){
-            	redisService.putList("userid:"+entry.getKey(), entry.getValue(),residueTime, TimeUnit.MINUTES);
+            	redisService.putList(RecommendConstant.USER_REDIS+entry.getKey(), entry.getValue(),residueTime, TimeUnit.MINUTES);
             }
             logger.info("基于用户过滤推荐重复end");
         } catch (TasteException e) {

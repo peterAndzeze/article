@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>字典配置</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <link th:href="@{../extjs/resources/css/ext-all.css}" rel="stylesheet"
+	type="text/css" />
+<link th:href="@{../css/default.resource.css}" rel="stylesheet" type="text/css" />	
+<link th:href="@{../css/ext-font.css}" rel="stylesheet" type="text/css" />	
+	
+<script th:src="@{../extjs/adapter/ext/ext-base.js}" type="text/javascript"></script>
+<script th:src="@{../extjs/ext-all.js}" type="text/javascript"></script>
+<script th:src="@{../js/sw.js}" type="text/javascript"></script>
+<script th:src="@{../js/customer/ajax.js}" type="text/javascript"></script>
+<script th:src="@{../js/customer/grid.js}" type="text/javascript"></script>
+<script th:src="@{../js/customer/menu.js}" type="text/javascript"></script>
+<script th:src="@{../js/customer/msg.js}" type="text/javascript"></script>
+<script th:src="@{../js/customer/panel.js}" type="text/javascript"></script>
+<script th:src="@{../js/customer/text.js}" type="text/javascript"></script>
+<script th:src="@{../js/customer/util.js}" type="text/javascript"></script>
+<script th:src="@{../js/customer/form.js}" type="text/javascript"></script>
+<script th:src="@{../js/customer/function.js}" type="text/javascript"></script>
+<script th:src="@{../js/recommend/recommend.js}" type="text/javascript"></script>
+</head>
+<body id="recommendTab">
+	<script type="text/javascript">
+		Ext.getCmp("recommend").render("recommendTab");
+	</script>
+</body>
+</html>

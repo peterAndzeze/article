@@ -7,7 +7,6 @@ public class QuartzInfo {
     private String cron;
     private String state;
     private String group;
-    private String isRun;
     private String className;
 
     public String getGroup() {
@@ -50,13 +49,6 @@ public class QuartzInfo {
         this.state = state;
     }
 
-    public String getIsRun() {
-        return isRun;
-    }
-
-    public void setIsRun(String isRun) {
-        this.isRun = isRun;
-    }
 
     public String getClassName() {
         return className;

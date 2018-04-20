@@ -1,11 +1,12 @@
 package com.article.recommend.mapper.localMapper;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.article.recommend.constant.PageModel;
+import com.article.recommend.entity.RecommendHistoryInfo;
 import com.article.recommend.service.foreignservice.ArticleResultVo;
 /**
  * 
@@ -37,5 +38,24 @@ public interface RecommendHistoryMapper {
 	 * @throws
 	 */
 	public void insertRecommendHistory(@Param("userId")Long userId,@Param("articleResultVos")List<ArticleResultVo> articleResultVos) ;
+	/**
+	 * 
+	 * @Title: count  
+	 * @Description: 总数         
+	 * @author sw
+	 * @param userId
+	 * @return
+	 */
+	public int count(@Param("userId")Long userId);
+	/**
+	 * 分页数据
+	 * @Title: page  
+	 * @Description: TODO         
+	 * @author sw
+	 * @param historyInfo
+	 * @param pageModel
+	 * @return
+	 */
+	public List<RecommendHistoryInfo> page(@Param("history")RecommendHistoryInfo historyInfo,@Param("page")PageModel pageModel);
 	
 }

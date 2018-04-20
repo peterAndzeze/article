@@ -23,8 +23,8 @@ public class QuartzApplicationRunner implements ApplicationRunner {
         System.out.println("项目启动后加载定时任务start****");
         List<QuartzInfo> quartzInfos=quartzService.getQuartzInfos();
         quartzInfos.forEach(quartzInfo->{
-            if(quartzInfo.getState().equals(RecommendConstant.SYSTEM_DATE_EFFECTIVE)){//有效数据
-                quartzManager.addJob(quartzInfo.getClassName(),quartzInfo.getGroup(),quartzInfo.getCron(),quartzInfo.getIsRun());
+            if(quartzInfo.getState().equals(RecommendConstant.QUARTZ_RUNING)){//运行中的数据添加
+                quartzManager.addJob(quartzInfo.getClassName(),quartzInfo.getGroup(),quartzInfo.getCron());
             }
         });
         System.out.println("项目启动后加载定时任务end****");
